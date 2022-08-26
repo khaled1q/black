@@ -6773,30 +6773,37 @@ end
 end
 send(msg_chat_id,msg_id,'\n*- تم ترقيه - ('..y..') ادمنيه *',"md",true)  
 end
-
-if text == 'المالك' then
-if msg.can_be_deleted_for_all_users == false then
-return send(msg_chat_id,msg_id,"\n*- عذرآ البوت ليس ادمن في الكروب يرجى ترقيته وتفعيل الصلاحيات له *","md",true)  
 end
-local Info_Members = LuaTele.getSupergroupMembers(msg_chat_id, "Administrators", "*", 0, 200)
-local List_Members = Info_Members.members
-for k, v in pairs(List_Members) do
-if Info_Members.members[k].status.luatele == "chatMemberStatusCreator" then
-local UserInfo = LuaTele.getUser(v.member_id.user_id)
-if UserInfo.first_name == "" then
-send(msg_chat_id,msg_id,"*-اوبس , المالك حسابه محذوف *","md",true)  
+if text == 'المنشئ' or text == 'المالك' then
+if msg.can_be_deleted_for_all_users == false then
+LuaTele.sendText(msg.chat_id,msg.id,"*  - ┇البوت لا يمتلك صلاحية*","md",true)  
 return false
 end
-if UserInfo.username then
-Creator = "*-مالك الكروب : @"..UserInfo.username.."*\n"
+local info_ = LuaTele.getSupergroupMembers(msg.chat_id, "Administrators", "*", 0, 200)
+local list_ = info_.members
+for k, v in pairs(list_) do
+if info_.members[k].status.luatele == "chatMemberStatusCreator" then
+local UserInfo = LuaTele.getUser(v.member_id.user_id)
+if UserInfo.first_name == "" then
+LuaTele.sendText(msg.chat_id,msg.id,"*  - ┇"..text.." حساب محذوف*","md",true)  
+return false
+end
+if UserInfo.username and UserInfo.username ~= "" then
+t = '['..UserInfo.first_name..'](t.me/'..UserInfo.username..')'
+u = '[@'..UserInfo.username..']'
+ban = ' '..UserInfo.first_name..' '
 else
-Creator = "-مالك الكروب : *["..UserInfo.first_name.."](tg://user?id="..UserInfo.id..")\n"
+t = '['..UserInfo.first_name..'](tg://user?id='..UserInfo.id..')'
+u = 'لا يوجد'
 end
-return send(msg_chat_id,msg_id,Creator,"md",true)  
+sm = LuaTele.getChatMember(msg.chat_id,UserInfo.id)
+if sm.status.custom_title then
+if sm.status.custom_title ~= "" then
+custom = sm.status.custom_title
+else
+custom = 'لا يوجد'
 end
 end
-end
-
 
 if text == 'كشف البوتات' then
 if not msg.Manger then
@@ -11977,6 +11984,34 @@ os.remove('audio.ogg')
 end 
 end
 end
+if text == 'مبرمج السورس' or text == 'مطور السورس' then
+local UserId_Info = LuaTele.searchPublicChat("E_M_K")
+if UserId_Info.id then
+local UserInfo = LuaTele.getUser(UserId_Info.id)
+if UserInfo.username and UserInfo.username ~= "" then
+t = '['..UserInfo.first_name..'](t.me/'..UserInfo.username..')'
+ban = ' '..UserInfo.first_name..' '
+u = '[@'..UserInfo.username..']'
+else
+t = '['..UserInfo.first_name..'](tg://user?id='..UserInfo.id..')'
+u = 'لا يوجد'
+end
+local photo = LuaTele.getUserProfilePhotos(UserId_Info.id)
+if photo.total_count > 0 then
+local TestText = "  *  - ┇Name : *( "..(t).." *)*\n*  - ┇User : *( "..(u).." *)*\n*  - ┇Bio :* ["..GetBio(UserInfo.id).."]\n"
+keyboardd = {}
+keyboardd.inline_keyboard = {
+{
+{text = ban, url = "https://t.me/"..UserInfo.username..""},
+},
+}
+local msg_id = msg.id/2097152/0.5 
+https.request("https://api.telegram.org/bot"..Token..'/sendPhoto?chat_id='..msg.chat_id..'&caption='..URL.escape(TestText)..'&photo='..photo.photos[1].sizes[#photo.photos[1].sizes].photo.remote.id..'&reply_to_message_id='..msg_id..'&parse_mode=markdown&disable_web_page_preview=true&reply_markup='..JSON.encode(keyboardd))
+else
+LuaTele.sendText(msg.chat_id,msg.id,"*  - ┇الاسم : *( "..(t).." *)*\n*  - ┇المعرف : *( "..(u).." *)*\n["..GetBio(UserInfo.id).."]","md",true)
+end
+end
+end
 if text == 'تحويل' then 
 if tonumber(msg.reply_to_message_id) > 0 then
 local result = LuaTele.getMessage(msg.chat_id, msg.reply_to_message_id)
@@ -12392,19 +12427,19 @@ end
 if text == "تتزوجيني" and msg.reply_to_message_id ~= 0 then
 local Message_Reply = LuaTele.getMessage(msg.chat_id, msg.reply_to_message_id)
 if tonumber(Redis:get(black..msg_chat_id..Message_Reply.sender.user_id.."mtzwga:")) == tonumber(msg.sender.user_id) or tonumber(Redis:get(black..msg_chat_id..msg.sender.user_id.."mtzwga:")) == tonumber(Message_Reply.sender.user_id) then
-  return send(msg_chat_id,msg_id,"  دكعد متزوجين اصلا","md")
+  return send(msg_chat_id,msg_id,"منتو متجوزين ولا هو محن وخلاص","md")
 elseif tonumber(Message_Reply.sender.user_id) == tonumber(msg.sender.user_id) then
-  return send(msg_chat_id,msg_id,"   انت غبي تتزوج نفسك ؟؟","md")
+  return send(msg_chat_id,msg_id,"انت اهبل يبني عاوز تتجوز نفسك ؟؟","md")
 elseif tonumber(Message_Reply.sender.user_id) == tonumber(black) then
-  return send(msg_chat_id,msg_id,"ابعد عني ","md")
+  return send(msg_chat_id,msg_id,"ابعد عني يبن الحيحانه","md")
 elseif Redis:get(black..msg_chat_id..Message_Reply.sender.user_id.."mtzwga:") then
 local zwg_id =  Redis:get(black..msg_chat_id..Message_Reply.sender.user_id.."mtzwga:")
 local zwg_info = LuaTele.getUser(zwg_id)
-return send(msg_chat_id,msg_id," راح اصيحلك زوجها\n["..zwg_info.first_name.."](tg://user?id="..zwg_id..")\  تعالل لكك حيبوك زوجتك","md")
+return send(msg_chat_id,msg_id,"هناديلك جوزها\n["..zwg_info.first_name.."](tg://user?id="..zwg_id..")\nالحق يا دكر عاوزين يتجوزو مراتك","md")
 elseif Redis:get(black..msg_chat_id..msg.sender.user_id.."mtzwga:") then
   local zwg_id =  Redis:get(black..msg_chat_id..msg.sender.user_id.."mtzwga:")
   local zwg_info = LuaTele.getUser(zwg_id)
-  return send(msg_chat_id,msg_id," حصيحلك مرتك\n["..zwg_info.first_name.."](tg://user?id="..zwg_id..")\   لحكي راح يتزوج عليج","md")
+  return send(msg_chat_id,msg_id,"هناديلك مراتك\n["..zwg_info.first_name.."](tg://user?id="..zwg_id..")\nالحقي يا وليه جوزك عاوز يتجوز عليكي","md")
 elseif not Redis:get(black..msg_chat_id..Message_Reply.sender.user_id.."mtzwga:")  then
 local Message_Reply = LuaTele.getMessage(msg.chat_id, msg.reply_to_message_id)
 local rep_info = LuaTele.getUser(Message_Reply.sender.user_id)
@@ -12416,11 +12451,11 @@ local reply_markup = LuaTele.replyMarkup{
   data = {
   {
   {text = 'موافقه', data = Message_Reply.sender.user_id..'/yes_z/'..msg.sender.user_id},
-  {text = 'مو موافقه', data = Message_Reply.sender.user_id..'/no_z/'..msg.sender.user_id},
+  {text = 'مش موافقه', data = Message_Reply.sender.user_id..'/no_z/'..msg.sender.user_id},
   },
   }
   }
-return send(msg_chat_id,msg.reply_to_message_id,"يا "..rep_tag.."\nالرجال"..user_tag.."\nطالب ايدج للزواج  شرايج ؟","md",false, false, false, false, reply_markup)
+return send(msg_chat_id,msg.reply_to_message_id,"يا "..rep_tag.."\nالكبتن"..user_tag.."\nطالب ايدك للجواز اي رايك ؟","md",false, false, false, false, reply_markup)
 end
 end
 if text == "زوجتي" then
@@ -16388,7 +16423,7 @@ Redis:set(black.."Get:Reides:Commands:Group"..msg_chat_id..":"..'من', 'رفع 
 Redis:set(black.."Get:Reides:Commands:Group"..msg_chat_id..":"..'اس', 'رفع منشئ اساسي')
 Redis:set(black.."Get:Reides:Commands:Group"..msg_chat_id..":"..'مط', 'رفع مطور')
 Redis:set(black.."Get:Reides:Commands:Group"..msg_chat_id..":"..'ثانوي', 'رفع مطور ثانوي')
-Redis:set(black.."Get:Reides:Commands:Group"..msg_chat_id..":"..'ج', 'تتجوزيني')
+Redis:set(black.."Get:Reides:Commands:Group"..msg_chat_id..":"..'ج', 'تتزوجيني')
 Redis:set(black.."Get:Reides:Commands:Group"..msg_chat_id..":"..'قف', 'قفل الاشعارات')
 Redis:set(black.."Get:Reides:Commands:Group"..msg_chat_id..":"..'فف', 'فتح الاشعارات')
 Redis:set(black.."Get:Reides:Commands:Group"..msg_chat_id..":"..'ر', 'الرابط')
@@ -16408,7 +16443,7 @@ return send(msg_chat_id,msg_id,[[*
 - تفعيل الايدي بالصوره - تفع -
 - رفع مطور - مط -
 - رفع مطور ثانوي - ثانوي -
-- تتجوزيني - ج -
+- تتزوجيني - ج -
 - قفل الاشعارات - قف -
 - فتح الاشعارات - فف -
 - الرابط - ر -
