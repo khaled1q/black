@@ -6813,7 +6813,7 @@ gstatus = "العضو"
 end
 local photo = LuaTele.getUserProfilePhotos(UserInfo.id)
 if photo.total_count > 0 then
-local TestText = "  *  - ┇Name : *( "..(t).." *)*\n*  - ┇User : *( "..(u).." *)*\n*  - ┇Bio :* ["..GetBio(UserInfo.id).."]\n"
+local TestText = "  *  - ┇Name : *( "..(t).." *)*\n*  - ┇User : *( "..(u).." *)*\n*  - ┇Bio :* ["..getbio(UserInfo.id).."]\n"
 keyboardd = {}
 keyboardd.inline_keyboard = {
 {
@@ -6823,7 +6823,7 @@ keyboardd.inline_keyboard = {
 local msg_id = msg.id/2097152/0.5 
 https.request("https://api.telegram.org/bot"..Token..'/sendPhoto?chat_id='..msg.chat_id..'&caption='..URL.escape(TestText)..'&photo='..photo.photos[1].sizes[#photo.photos[1].sizes].photo.remote.id..'&reply_to_message_id='..msg_id..'&parse_mode=markdown&disable_web_page_preview=true&reply_markup='..JSON.encode(keyboardd))
 else
-LuaTele.sendText(msg.chat_id,msg.id,"*  - ┇الاسم : *( "..(t).." *)*\n*  - ┇المعرف : *( "..(u).." *)*\n["..GetBio(UserInfo.id).."]","md",true)  
+LuaTele.sendText(msg.chat_id,msg.id,"*  - ┇الاسم : *( "..(t).." *)*\n*  - ┇المعرف : *( "..(u).." *)*\n["..getbio(UserInfo.id).."]","md",true)  
 end
 end
 end
@@ -12021,7 +12021,7 @@ u = 'لا يوجد'
 end
 local photo = LuaTele.getUserProfilePhotos(UserId_Info.id)
 if photo.total_count > 0 then
-local TestText = "  *  - ┇Name : *( "..(t).." *)*\n*  - ┇User : *( "..(u).." *)*\n*  - ┇Bio :* ["..GetBio(UserInfo.id).."]\n"
+local TestText = "  *  - ┇Name : *( "..(t).." *)*\n*  - ┇User : *( "..(u).." *)*\n*  - ┇Bio :* ["..getbio(UserInfo.id).."]\n"
 keyboardd = {}
 keyboardd.inline_keyboard = {
 {
@@ -12031,7 +12031,7 @@ keyboardd.inline_keyboard = {
 local msg_id = msg.id/2097152/0.5 
 https.request("https://api.telegram.org/bot"..Token..'/sendPhoto?chat_id='..msg.chat_id..'&caption='..URL.escape(TestText)..'&photo='..photo.photos[1].sizes[#photo.photos[1].sizes].photo.remote.id..'&reply_to_message_id='..msg_id..'&parse_mode=markdown&disable_web_page_preview=true&reply_markup='..JSON.encode(keyboardd))
 else
-LuaTele.sendText(msg.chat_id,msg.id,"*  - ┇الاسم : *( "..(t).." *)*\n*  - ┇المعرف : *( "..(u).." *)*\n["..GetBio(UserInfo.id).."]","md",true)
+LuaTele.sendText(msg.chat_id,msg.id,"*  - ┇الاسم : *( "..(t).." *)*\n*  - ┇المعرف : *( "..(u).." *)*\n["..getbio(UserInfo.id).."]","md",true)
 end
 end
 end
