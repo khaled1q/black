@@ -6774,6 +6774,7 @@ end
 send(msg_chat_id,msg_id,'\n*- تم ترقيه - ('..y..') ادمنيه *',"md",true)  
 end
 end
+end
 if text == 'المنشئ' or text == 'المالك' then
 if msg.can_be_deleted_for_all_users == false then
 LuaTele.sendText(msg.chat_id,msg.id,"*  - ┇البوت لا يمتلك صلاحية*","md",true)  
@@ -6802,9 +6803,10 @@ if sm.status.custom_title ~= "" then
 custom = sm.status.custom_title
 else
 custom = 'لا يوجد'
-end
-end
 
+end
+end
+end
 if text == 'كشف البوتات' then
 if not msg.Manger then
 return send(msg_chat_id,msg_id,'\n*- هذا الامر يخص  '..Controller_Num(6)..' * ',"md",true)  
