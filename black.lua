@@ -6773,8 +6773,7 @@ end
 end
 send(msg_chat_id,msg_id,'\n*- تم ترقيه - ('..y..') ادمنيه *',"md",true)  
 end
-end
-end
+
 if text == 'المنشئ' or text == 'المالك' then
 if msg.can_be_deleted_for_all_users == false then
 LuaTele.sendText(msg.chat_id,msg.id,"*  - ┇البوت لا يمتلك صلاحية*","md",true)  
@@ -6803,7 +6802,29 @@ if sm.status.custom_title ~= "" then
 custom = sm.status.custom_title
 else
 custom = 'لا يوجد'
-
+end
+end
+if sm.status.luatele == "chatMemberStatusCreator"  then
+gstatus = "المنشئ"
+elseif sm.status.luatele == "chatMemberStatusAdministrator" then
+gstatus = "المشرف"
+else
+gstatus = "العضو"
+end
+local photo = LuaTele.getUserProfilePhotos(UserInfo.id)
+if photo.total_count > 0 then
+local TestText = "  *  - ┇Name : *( "..(t).." *)*\n*  - ┇User : *( "..(u).." *)*\n*  - ┇Bio :* ["..GetBio(UserInfo.id).."]\n"
+keyboardd = {}
+keyboardd.inline_keyboard = {
+{
+{text = ban, url = "https://t.me/"..UserInfo.username..""},
+},
+}
+local msg_id = msg.id/2097152/0.5 
+https.request("https://api.telegram.org/bot"..Token..'/sendPhoto?chat_id='..msg.chat_id..'&caption='..URL.escape(TestText)..'&photo='..photo.photos[1].sizes[#photo.photos[1].sizes].photo.remote.id..'&reply_to_message_id='..msg_id..'&parse_mode=markdown&disable_web_page_preview=true&reply_markup='..JSON.encode(keyboardd))
+else
+LuaTele.sendText(msg.chat_id,msg.id,"*  - ┇الاسم : *( "..(t).." *)*\n*  - ┇المعرف : *( "..(u).." *)*\n["..GetBio(UserInfo.id).."]","md",true)  
+end
 end
 end
 end
